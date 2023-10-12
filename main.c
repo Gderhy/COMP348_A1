@@ -1,22 +1,25 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include <time.h>
 
+#include "displayingMenu.h"
+#include "GeneratingData.h"
 
-void displayMenu();
-void displayTableOptions();
-void displaySummary(char* str, int numberOfRows, char* outputFileName);
 
 int main(int argc, char **argv){
 
-    system("clear"); // Clears the terminal 
+    char* commandForClearing = "cls"; // "cls" for windows and "clear" for linux
+    
+    srand(time(NULL));
 
     while(1){
 
+        system(commandForClearing);
         displayMenu();
         int menuSelection;
         scanf("%d", &menuSelection);
-        system("clear");
+        system(commandForClearing);
 
         if(menuSelection == 1){
 
@@ -31,14 +34,27 @@ int main(int argc, char **argv){
             scanf("%d", &numberOfRows); // ex of input (int) 45
 
             // defining the outputfilename
-            printf("Enter the output file name: ");
+            printf("Enter the output file name (without .txt): ");
             char outputFileName[100];
             scanf("%s", outputFileName); // ex of input (string)"filename"
 
             // Printing summary
             printf("\n");
             displaySummary(tableOptionSelection, numberOfRows, outputFileName);
-            printf("\n");
+            printf("\n"); 
+
+
+            // Next steps, read files to create necessary tables and write to output files
+            
+            generateData(tableOptionSelection, numberOfRows, outputFileName);
+            
+            
+            char proceed;
+            printf("\nPress 'c' or 'C' to continue ");
+            do{
+            scanf("%c", &proceed);
+            } while ( (proceed != 'c') && (proceed != 'C'));
+                
         } else { //Terminating program
 
             printf("Goodbye and thanks for using TableGen.\n");
@@ -48,48 +64,6 @@ int main(int argc, char **argv){
     
     return 0;
 }
-
-
-// Display displayMenu options
-void displayMenu(){
-    
-    printf("TableGen Menu\n");
-    printf("-------------\n");
-    printf("1. Generate new table\n");
-    printf("2. Exit\n\n");
-
-    printf("Selection: ");
-}
-
-// Display the table options you can choose from
-void displayTableOptions(){
-
-    printf("Column Options\n");
-    printf("--------------\n");
-    printf("1. User ID\n");
-    printf("2. First name\n");
-    printf("3. Last name\n");
-    printf("4. Country\n");
-    printf("5. Phone number\n");
-    printf("6. Email address\n");
-    printf("7. SIN\n");
-    printf("8. Password\n\n");
-
-    printf("Enter column list (comma-seperated, no space): ");
-}
-
-
-// Summarizes the collumns and their proprerties
-void displaySummary(char* selectedTables, int numberOfRows,  char* outputFileName){
-
-    printf("\tSummary of properties:\n");
-    printf("\t\tColumns: %s\n", selectedTables);
-    printf("\t\tNumber of rows: %d\n", numberOfRows);
-    printf("\t\tName of output file: %s\n", outputFileName);
-    printf("\n");
-}
-
-
 
 
 
